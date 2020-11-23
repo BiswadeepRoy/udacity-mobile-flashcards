@@ -1,4 +1,5 @@
 export const deckKey = 'KEY_ALL_DECKS'
+export const notificationKey = 'KEY_FLASHCARDS'
 
 export const decksData = {
     React: {
@@ -6,13 +7,11 @@ export const decksData = {
         questions: [
             {
                 question: 'What is React?',
-                correctAnswer: 'A library for managing user interfaces',
-                wrongAnswer: 'A method for managing user interfaces'
+                answer: 'A library for managing user interfaces',
             },
             {
                 question: 'Where do you make Ajax requests in React?',
-                correctAnswer: 'The componentDidMount lifecycle event',
-                wrongAnswer: 'The componentDidCatch lifecycle event',   
+                answer: 'The componentDidMount lifecycle event',
             }
         ]
     },
@@ -21,8 +20,7 @@ export const decksData = {
         questions: [
             {
                 question: 'What is a closure?',
-                correctAnswer: 'The combination of a function and the lexical environment within which that function was declared.',
-                wrongAnswer: 'The combination of a class and the lexical environment within which that function was declared.'
+                answer: 'The combination of a function and the lexical environment within which that function was declared.',
             }
         ]
     }

@@ -7,8 +7,7 @@ class AddQuestion extends Component {
 
     state = {
         question: '',
-        correctAnswer: '',
-        wrongAnswer: ''
+        answer: '',
     }
 
     changeQuestion = (question) => {
@@ -17,34 +16,26 @@ class AddQuestion extends Component {
         })
     }
 
-    changeCorrectAnswer = (correctAnswer) => {
+    changeAnswer = (answer) => {
         this.setState({
-            correctAnswer: correctAnswer
-        })
-    }
-
-    changeWrongAnswer = (wrongAnswer) => {
-        this.setState({
-            wrongAnswer: wrongAnswer
+            answer: answer
         })
     }
 
     submitQuestion = (event) => {
         event.preventDefault()
-        if (this.state.correctAnswer === '' || this.state.wrongAnswer === '' || this.state.question === '') {
+        if (this.state.answer === '' || this.state.question === '') {
             alert('Please enter a question/answer for your deck')
         }
         else {
             this.props.dispatch(addNewQuestion({
                 title: this.props.route.params.title,
                 question: this.state.question,
-                correctAnswer: this.state.correctAnswer,
-                wrongAnswer: this.state.wrongAnswer
+                answer: this.state.answer,
             }))
             this.setState({
                 question: '',
-                correctAnswer: '',
-                wrongAnswer: ''
+                answer: '',
             })
             alert('Question has been successfully added')
         }
@@ -62,10 +53,7 @@ class AddQuestion extends Component {
                         <TextInput style={{ padding: 10 }} value={this.state.question} placeholder="Enter the question" onChangeText={this.changeQuestion} />
                     </View>
                     <View style={styles.input}>
-                        <TextInput style={{ padding: 10 }} value={this.state.correctAnswer} placeholder="Enter the correct answer" onChangeText={this.changeCorrectAnswer} />
-                    </View>
-                    <View style={styles.input}>
-                        <TextInput style={{ padding: 10 }} value={this.state.wrongAnswer} placeholder="Enter the wrong answer" onChangeText={this.changeWrongAnswer} />
+                        <TextInput style={{ padding: 10 }} value={this.state.answer} placeholder="Enter the answer" onChangeText={this.changeAnswer} />
                     </View>
                     <TouchableOpacity
                         style={styles.submitButton}

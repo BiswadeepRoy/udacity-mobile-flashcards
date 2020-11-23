@@ -61,9 +61,9 @@ export function deleteExistingDeck(title) {
     }
 }
 
-export function addNewQuestion({ title, question, correctAnswer, wrongAnswer }) {
+export function addNewQuestion({ title, question, answer }) {
     return (dispatch) => {
-        editQuestion({ title, question, correctAnswer, wrongAnswer }, false).then(() => fetchDecks()
+        editQuestion({ title, question, answer }, false).then(() => fetchDecks()
             .then(decks => {
                 dispatch({
                     type: ADD_QUESTION,
@@ -74,9 +74,9 @@ export function addNewQuestion({ title, question, correctAnswer, wrongAnswer }) 
     }
 }
 
-export function deleteQuestion({ title, question, correctAnswer, wrongAnswer }) {
+export function deleteQuestion({ title, question, answer }) {
     return (dispatch) => {
-        editQuestion({ title, question, correctAnswer, wrongAnswer }, true).then(() => fetchDecks()
+        editQuestion({ title, question, answer }, true).then(() => fetchDecks()
             .then(decks => {
                 dispatch({
                     type: DELETE_QUESTION,

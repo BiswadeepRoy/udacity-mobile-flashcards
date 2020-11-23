@@ -1,6 +1,8 @@
 
 import AsyncStorage from '@react-native-community/async-storage'
-import { decksData, deckKey } from './Data'
+import { decksData, deckKey, notificationKey } from './Data'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
 
 export function setDummyDecks() {
     return AsyncStorage.setItem(deckKey, JSON.stringify(decksData))
@@ -22,7 +24,7 @@ export function addDeck(title) {
     }))
 }
 
-export function editQuestion({ title, question, correctAnswer, wrongAnswer }, doDelete) {
+export function editQuestion({ title, question, answer }, doDelete) {
     return fetchDecks(deckKey).then((results) => {
         let questions = results[title].questions
         if (doDelete) {
@@ -31,8 +33,7 @@ export function editQuestion({ title, question, correctAnswer, wrongAnswer }, do
         else {
             questions = questions.concat({
                 question,
-                correctAnswer,
-                wrongAnswer
+                answer
             })
         }
         return AsyncStorage.mergeItem(deckKey, JSON.stringify({
@@ -52,4 +53,50 @@ export function deleteDeck(title) {
             delete data[title]
             AsyncStorage.setItem(deckKey, JSON.stringify(data))
         })
-}   
+}
+
+function createNotification() {
+    return {
+        title: 'Attempt a quiz!',
+        body: "👋 don't forget to attempt a quiz today!!",
+        ios: {
+            sound: true,
+        }
+    }
+}
+
+export function clearLocalNotification() {
+    return AsyncStorage.removeItem(notificationKey)
+        .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
+
+export function setLocalNotification() {
+    AsyncStorage.getItem(notificationKey)
+        .then(JSON.parse)
+        .then((data) => {
+            if (data === null) {
+                Permissions.askAsync(Permissions.NOTIFICATIONS)
+                    .then(({ status }) => {
+                        if (status === 'granted') {
+                            Notifications.cancelAllScheduledNotificationsAsync()
+
+                            let tomorrow = new Date()
+                            tomorrow.setDate(tomorrow.getDate() + 1)
+                            tomorrow.setHours(8) // Setting on 8 am every morning
+                            tomorrow.setMinutes(0)
+
+                            Notifications.scheduleLocalNotificationAsync(
+                                createNotification(),
+                                {
+                                    time: tomorrow,
+                                    repeat: 'day',
+                                }
+                            )
+
+                            AsyncStorage.setItem(notificationKey, JSON.stringify(true))
+                        }
+                    })
+            }
+        })
+}
+
