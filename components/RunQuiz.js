@@ -128,6 +128,10 @@ class RunQuiz extends Component {
                     <Text style={{ color: 'black', fontSize: 15 }}>{this.state.score} / {this.state.deck.questions.length}</Text>}
 
                 {this.state.answer === '' ?
+                    <Text style={{ color: 'black', fontSize: 15 }}></Text> :
+                    <Text style={{ color: 'black', fontSize: 15 }}>{this.state.deck.questions.length - (this.state.count + 1)} question(s) remaining</Text>}
+
+                {this.state.answer === '' ?
                     <View><TouchableOpacity
                         style={styles.submitButton}
                         onPress={(event) => this.restartQuiz(event)}>
